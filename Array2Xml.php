@@ -30,16 +30,19 @@ class Array2Xml
 
     public function conv()
     {
-        if (!count($this->context)) {
-            throw new Exception("Array is not set", 500);
-        }
-        return $this->formatXml($this->a2x(current($this->context), $this->res));
+        $_context = count($this->context) ? current($this->context) : [];
+        return $this->formatXml($this->a2x($_context, $this->res));
     }
 
-    protected function init($root)
+    protected function init()
     {
-        $header = "<?xml version=\"1.0\" encoding=\"{$this->charset}\"?><{$root}/>";
+        $rootElement = key($this->context);
+        $rootContent = current($this->context);
+        $header = "<?xml version=\"1.0\" encoding=\"{$this->charset}\"?><{$rootElement}/>";
         $this->res = new SimpleXMLElement($header);
+        $this->tryToAddAttribs($rootContent, $this->res)
+             ->tryToAddContent($rootContent, $this->res)
+             ->setContext($this->validContext($rootContent));
     }
 
     protected function addAttribs(array $attribs, SimpleXMLElement $node)
@@ -52,13 +55,20 @@ class Array2Xml
         return $node;
     }
 
-    protected function tryToAddAttribs(array $inner, SimpleXMLElement $node)
+    protected function tryToAddAttribs(array $context, SimpleXMLElement $node)
     {
-        if (isset($inner['@attributes'])) {
-            $this->addAttribs($inner['@attributes'], $node);
-            unset($inner['@attributes']);
+        if (isset($context['@attributes'])) {
+            $this->addAttribs($context['@attributes'], $node);
         }
-        return $node;
+        return $this;
+    }
+
+    protected function tryToAddContent(array $context, SimpleXMLElement $node)
+    {
+        if (isset($context['@content'])) {
+            $node->{0} = $context['@content'];
+        }
+        return $this;
     }
 
     protected function addEnum(array $items, SimpleXMLElement $node, $caption)
@@ -66,36 +76,24 @@ class Array2Xml
         if (count($items)) {
             foreach ($items as $item) {
                 $subNode = $node->addChild($caption);
-                $this->tryToAddAttribs($item, $subNode);
-                unset($item['@attributes']);
             }
         }
     }
 
-    protected function a2x(array $inner, SimpleXMLElement $node)
+    protected function a2x(array $context, SimpleXMLElement $node)
     {
-        $this->tryToAddAttribs($inner, $node);
-        unset($inner['@attributes']);       
-        if (count($inner)) {
-            foreach ($inner as $key => $value) {
+        if (!count($context)) {
+            return $this->res;
+        }
+        $this->tryToAddAttribs($context, $node)
+             ->tryToAddContent($context, $node);
+        $_context = $this->validContext($context);
+        if (count($_context)) {
+            foreach ($_context as $key => $value) {
                 if ($this->isEnumeration($value)) {
                     $this->addEnum($value, $node, $key);
-                } else {
-                    //var_dump($key, $value);
-                    if (isset($value['@content'])) {
-                        $subNode = $node->addChild($key, $value['@content']);
-                        unset($value['@content']);
-                    } else {
-                        if ($key != '@content') {
-                            $subNode = $node->addChild($key);
-                        }
-                    }
-                    if ($key == '@content' && is_string($value)) {
-                        $subNode = $node->addChild($key, $value);
-                    } else {
-                        //var_dump($key, $value, $subNode->getName());
-                        $this->a2x($value, $subNode);
-                    }
+                } else {                  
+                    $this->a2x($value, $node->addChild($key));
                 }
             }
         }
@@ -116,9 +114,17 @@ class Array2Xml
         return true;
     }
 
+    protected function validContext(array $context)
+    {
+        $bother =[
+            '@attributes' => '',
+            '@content' => '',
+        ];
+        return array_diff_key($context, $bother);
+    }
+
     protected function formatXml(SimpleXMLElement $xml)
     {
-        //var_dump($xml->asXML());
         $dom = new DOMDocument("1.0");
         $dom->formatOutput = true;
         $dom->loadXML($xml->asXML());

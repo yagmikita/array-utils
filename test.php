@@ -10,8 +10,7 @@ $a = [
     ],
 ];
 $a2x = new Array2Xml($a);
-var_dump($a2x->conv());
-
+var_dump($a2x->conv()) . PHP_EOL . PHP_EOL;
 
 
 $a = [
@@ -21,8 +20,7 @@ $a = [
         ],
     ],
 ];
-var_dump($a2x->setContext($a)->conv());
-
+var_dump($a2x->setContext($a)->conv()) . PHP_EOL . PHP_EOL;
 
 
 $a = [
@@ -42,8 +40,7 @@ $a = [
         ],
     ],
 ];
-var_dump($a2x->setContext($a)->conv());
-
+var_dump($a2x->setContext($a)->conv()) . PHP_EOL . PHP_EOL;
 
 
 $a = [
