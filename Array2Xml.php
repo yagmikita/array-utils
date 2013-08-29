@@ -75,9 +75,26 @@ class Array2Xml
     {
         if (count($items)) {
             foreach ($items as $item) {
-                $enumNode = $node->addChild($caption);
-                $this->tryToAddAttribs($item, $enumNode)
-                     ->tryToAddContent($item, $enumNode);                
+                $this->loop($item, $node->addChild($caption));        
+            }
+        }
+    }
+
+    protected function loop(array $context, SimpleXMLElement $node)
+    {
+        $this->tryToAddAttribs($context, $node)
+             ->tryToAddContent($context, $node);
+        $_context = $this->validContext($context);
+        if (count($_context)) {
+            foreach ($_context as $key => $value) {
+                if ($this->isEnumeration($value)) {
+                    $this->addEnum($value, $node, $key);
+                } else {
+                    if (is_string($value)) {
+                        var_dump($value);
+                    }                 
+                    $this->a2x($value, $node->addChild($key));
+                }
             }
         }
     }
@@ -87,18 +104,7 @@ class Array2Xml
         if (!count($context)) {
             return $this->res;
         }
-        $this->tryToAddAttribs($context, $node)
-             ->tryToAddContent($context, $node);
-        $_context = $this->validContext($context);
-        if (count($_context)) {
-            foreach ($_context as $key => $value) {
-                if ($this->isEnumeration($value)) {
-                    $this->addEnum($value, $node, $key);
-                } else {                  
-                    $this->a2x($value, $node->addChild($key));
-                }
-            }
-        }
+        $this->loop($context, $node);
         return $this->res;
     }
 

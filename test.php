@@ -41,6 +41,25 @@ $a = [
                 ],
                 [
                     '@content' => 'Eugen',
+                    'test' => [
+                        '@attributes' => [
+                            'favicon' => '/img/favicon.ico',
+                        ],
+                        'test-level2' => [
+                            '@content' => 'level2 test content',
+                            'enum' => [
+                                [
+                                    '@attributes' => [
+                                    ],
+                                ],
+                                [
+                                    '@attributes' => [
+                                        'nothing' => 'so far',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
