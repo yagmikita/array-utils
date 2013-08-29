@@ -75,7 +75,9 @@ class Array2Xml
     {
         if (count($items)) {
             foreach ($items as $item) {
-                $subNode = $node->addChild($caption);
+                $enumNode = $node->addChild($caption);
+                $this->tryToAddAttribs($item, $enumNode)
+                     ->tryToAddContent($item, $enumNode);                
             }
         }
     }

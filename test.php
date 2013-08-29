@@ -28,13 +28,19 @@ $a = [
         'people' => [
             'person' => [
                 [
-                    '@content' => 'Alex'
+                    '@content' => 'Alex',
+                    '@attributes' => [
+                        'mood' => 'poor',
+                    ],                    
                 ],
                 [
-                    '@content' => 'Max'
+                    '@attributes' => [
+                        'mood' => 'good',
+                    ],
+                    '@content' => 'Max',
                 ],
                 [
-                    '@content' => 'Eugen'
+                    '@content' => 'Eugen',
                 ],
             ],
         ],
