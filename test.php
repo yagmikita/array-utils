@@ -70,6 +70,18 @@ var_dump($a2x->setContext($a)->conv()) . PHP_EOL . PHP_EOL;
 
 $a = [
     'root' => [
+        'person' => [
+            'gender' => 'male',
+            'age' => '26',
+            'name' => 'Александр',
+        ],
+    ],
+];
+var_dump($a2x->setContext($a)->conv()) . PHP_EOL . PHP_EOL;
+
+
+$a = [
+    'root' => [
         '@attributes' => [
             'type' => 'test_type',
             'id' => 'test_id',

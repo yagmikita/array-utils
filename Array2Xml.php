@@ -63,10 +63,12 @@ class Array2Xml
         return $this;
     }
 
-    protected function tryToAddContent(array $context, SimpleXMLElement $node)
+    protected function tryToAddContent($context, SimpleXMLElement $node)
     {
         if (isset($context['@content'])) {
             $node->{0} = $context['@content'];
+        } elseif (is_string($context)) {
+            $node->{0} = $context;
         }
         return $this;
     }
@@ -91,9 +93,10 @@ class Array2Xml
                     $this->addEnum($value, $node, $key);
                 } else {
                     if (is_string($value)) {
-                        var_dump($value);
-                    }                 
-                    $this->a2x($value, $node->addChild($key));
+                        $node->addChild($key, $value);
+                    } else {
+                        $this->a2x($value, $node->addChild($key));
+                    }
                 }
             }
         }

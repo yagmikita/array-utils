@@ -27,6 +27,20 @@ Use cases:
  		];
 ```
 
+ * short '@content' synthax, ex.:
+```php
+ 	<?php
+		$a = [
+		    'root' => [
+		        'person' => [
+		            'gender' => 'male',
+		            'age' => '26',
+		            'name' => 'Александр',
+		        ],
+		    ],
+		];
+```
+
  * in order to add tags with the same name add an array of the enumerated elements with the key of desired keys names, ex.:
 ```php
  	<?php
