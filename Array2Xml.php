@@ -8,16 +8,12 @@ class Array2Xml
 
     public function __construct(array $context = [], $charset = 'UTF-8')
     {
-        if (count($context) != 1) {
-            throw new Exception('There must be only one root element', 500);
-        }
         $this->setContext($context);
         $this->setCharset($charset);
-        $this->init(key($this->context));
     }
 
     public function setContext(array $context = [])
-    {
+    { 
         $this->context = $context;
         return $this;
     }
@@ -30,8 +26,11 @@ class Array2Xml
 
     public function conv()
     {
-        $_context = count($this->context) ? current($this->context) : [];
-        return $this->formatXml($this->a2x($_context, $this->res));
+        if (count($this->context) != 1) {
+            throw new Exception('There must be only one root element', 500);
+        }               
+        $this->init(key($this->context));
+        return $this->formatXml($this->a2x($this->context, $this->res));
     }
 
     protected function init()
@@ -57,14 +56,16 @@ class Array2Xml
 
     protected function tryToAddAttribs(array $context, SimpleXMLElement $node)
     {
-        if (isset($context['@attributes'])) {
-            $this->addAttribs($context['@attributes'], $node);
+        if (!count($node->attributes())) {
+            if (isset($context['@attributes'])) {
+                $this->addAttribs($context['@attributes'], $node);
+            }
         }
         return $this;
     }
 
     protected function tryToAddContent($context, SimpleXMLElement $node)
-    {
+    {        
         if (isset($context['@content'])) {
             $node->{0} = $context['@content'];
         } elseif (is_string($context)) {
@@ -107,6 +108,7 @@ class Array2Xml
         if (!count($context)) {
             return $this->res;
         }
+        //var_dump($context);
         $this->loop($context, $node);
         return $this->res;
     }

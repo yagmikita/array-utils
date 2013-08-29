@@ -27,7 +27,7 @@ Use cases:
  		];
 ```
 
- * short '@content' synthax, ex.:
+ * short '@content' syntax, ex.:
 ```php
  	<?php
 		$a = [

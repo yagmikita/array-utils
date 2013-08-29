@@ -2,6 +2,7 @@
 
 include 'Array2Xml.php';
 
+/*
 $a = [
     'root' => [
         '@attributes' => [
@@ -135,3 +136,48 @@ $a = [
     ],
 ];
 var_dump($a2x->setContext($a)->conv());
+*/
+
+$a = [
+    'pk' => [
+        '@attributes' => [
+            'excl' => 'web_actions',
+            'system' => 'depWEBsys',
+            'id' => 'packet20130821113908my_super_test1',
+        ],
+        'mes' => [
+            '@attributes' => [
+                't' => 'AddEvent',
+                'id' => 'mes20130821113908my_super_test1',
+            ],
+            'ev' => [
+                '@attributes' => [
+                    'evt' => '010038',
+                    'src' => 'NKK',
+                    'st' => 'WT',
+                    'start' => '20130821113908',
+                    'addrtype' => 'MB',
+                    'addrid' => '+380957700418',
+                    'bank' => 'PB',
+                    'lang' => 'RU',
+                ],
+                'attr' => [
+                    [
+                        '@attributes' => [
+                            'code' => 'SUBJ',
+                            'val' => 'letter subject',
+                        ],
+                    ],
+                    [
+                        '@attributes' => [
+                            'code' => 'MAILTO',
+                            'val' => 'yagmikita@gmail.com',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];
+$a2x = new Array2Xml($a);
+var_dump($a2x->conv());
