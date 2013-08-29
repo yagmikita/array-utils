@@ -1,6 +1,52 @@
 <?php
 
-$context = [
+include 'Array2Xml.php';
+
+$a = [
+    'root' => [
+        '@attributes' => [
+            'attr1' => '1',
+        ],
+    ],
+];
+$a2x = new Array2Xml($a);
+var_dump($a2x->conv());
+
+
+
+$a = [
+    'root' => [
+        'message' => [
+            '@content' => 'This is text content',
+        ],
+    ],
+];
+var_dump($a2x->setContext($a)->conv());
+
+
+
+$a = [
+    'root' => [
+        'people' => [
+            'person' => [
+                [
+                    '@content' => 'Alex'
+                ],
+                [
+                    '@content' => 'Max'
+                ],
+                [
+                    '@content' => 'Eugen'
+                ],
+            ],
+        ],
+    ],
+];
+var_dump($a2x->setContext($a)->conv());
+
+
+
+$a = [
     'root' => [
         '@attributes' => [
             'type' => 'test_type',
@@ -54,9 +100,4 @@ $context = [
         ],
     ],
 ];
-
-
-
-include 'Array2Xml.php';
-$a2x = new Array2Xml($context);
-var_dump($a2x->conv());
+var_dump($a2x->setContext($a)->conv());

@@ -6,18 +6,33 @@ class Array2Xml
     protected $context;
     protected $charset;
 
-    public function __construct(array $context, $charset = 'UTF-8')
+    public function __construct(array $context = [], $charset = 'UTF-8')
     {
         if (count($context) != 1) {
             throw new Exception('There must be only one root element', 500);
         }
-        $this->context = $context;
-        $this->charset = $charset;
+        $this->setContext($context);
+        $this->setCharset($charset);
         $this->init(key($this->context));
+    }
+
+    public function setContext(array $context = [])
+    {
+        $this->context = $context;
+        return $this;
+    }
+
+    public function setCharset($charset = 'UTF-8')
+    {
+        $this->charset = $charset;
+        return $this;
     }
 
     public function conv()
     {
+        if (!count($this->context)) {
+            throw new Exception("Array is not set", 500);
+        }
         return $this->formatXml($this->a2x(current($this->context), $this->res));
     }
 
@@ -66,14 +81,20 @@ class Array2Xml
                 if ($this->isEnumeration($value)) {
                     $this->addEnum($value, $node, $key);
                 } else {
+                    //var_dump($key, $value);
                     if (isset($value['@content'])) {
                         $subNode = $node->addChild($key, $value['@content']);
+                        unset($value['@content']);
                     } else {
-                        $subNode = $node->addChild($key);
+                        if ($key != '@content') {
+                            $subNode = $node->addChild($key);
+                        }
                     }
-                    unset($value['@content']);
-                    if (count($value)) {
-                       $this->a2x($value, $subNode);
+                    if ($key == '@content' && is_string($value)) {
+                        $subNode = $node->addChild($key, $value);
+                    } else {
+                        //var_dump($key, $value, $subNode->getName());
+                        $this->a2x($value, $subNode);
                     }
                 }
             }
@@ -81,8 +102,11 @@ class Array2Xml
         return $this->res;
     }
 
-    protected function isEnumeration(array $items)
+    protected function isEnumeration($items)
     {
+        if (is_string($items)) {
+            return false;
+        }
         $keys = array_keys($items);
         foreach ($keys as $key) {
             if (!is_numeric($key)) {
@@ -94,6 +118,7 @@ class Array2Xml
 
     protected function formatXml(SimpleXMLElement $xml)
     {
+        //var_dump($xml->asXML());
         $dom = new DOMDocument("1.0");
         $dom->formatOutput = true;
         $dom->loadXML($xml->asXML());
