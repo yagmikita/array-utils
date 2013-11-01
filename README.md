@@ -55,11 +55,11 @@ Use cases:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-  <people>
-    <person mood="poor">Alex</person>
-    <person mood="good">Max</person>
-    <person>Eugen<test favicon="/img/favicon.ico"><test-level2>level2 test content<enum/><enum nothing="so far"/></test-level2></test></person>
-  </people>
+  <person>
+    <gender>male</gender>
+    <age>26</age>
+    <name>Александр</name>
+  </person>
 </root>
 ```
 
