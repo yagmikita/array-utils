@@ -1,0 +1,20 @@
+{
+    "name": "yagmikita/arrayUtils",
+    "type": "library",
+    "keywords": ["library", "utils", "utilities", "lib", "array", "xml", "array2xml"],
+    "authors": [
+        {
+            "name": "Gopkalo Nikita",
+            "email": "yagmikita@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "ArrayUtils": "src"
+        }
+    }
+}

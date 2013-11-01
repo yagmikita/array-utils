@@ -1,5 +1,7 @@
 <?php
 
+namespace ArrayUtils;
+
 class Array2Xml
 {
     protected $res;
@@ -13,7 +15,7 @@ class Array2Xml
     }
 
     public function setContext(array $context = [])
-    { 
+    {
         $this->context = $context;
         return $this;
     }
@@ -28,7 +30,7 @@ class Array2Xml
     {
         if (count($this->context) != 1) {
             throw new Exception('There must be only one root element', 500);
-        }               
+        }
         $this->init(key($this->context));
         return $this->formatXml($this->a2x($this->context, $this->res));
     }
@@ -38,13 +40,13 @@ class Array2Xml
         $rootElement = key($this->context);
         $rootContent = current($this->context);
         $header = "<?xml version=\"1.0\" encoding=\"{$this->charset}\"?><{$rootElement}/>";
-        $this->res = new SimpleXMLElement($header);
+        $this->res = new \SimpleXMLElement($header);
         $this->tryToAddAttribs($rootContent, $this->res)
              ->tryToAddContent($rootContent, $this->res)
              ->setContext($this->validContext($rootContent));
     }
 
-    protected function addAttribs(array $attribs, SimpleXMLElement $node)
+    protected function addAttribs(array $attribs, \SimpleXMLElement $node)
     {
         if (count($attribs)) {
             foreach ($attribs as $attrKey => $attrVal) {
@@ -54,7 +56,7 @@ class Array2Xml
         return $node;
     }
 
-    protected function tryToAddAttribs(array $context, SimpleXMLElement $node)
+    protected function tryToAddAttribs(array $context, \SimpleXMLElement $node)
     {
         if (!count($node->attributes())) {
             if (isset($context['@attributes'])) {
@@ -64,8 +66,8 @@ class Array2Xml
         return $this;
     }
 
-    protected function tryToAddContent($context, SimpleXMLElement $node)
-    {        
+    protected function tryToAddContent($context, \SimpleXMLElement $node)
+    {
         if (isset($context['@content'])) {
             $node->{0} = $context['@content'];
         } elseif (is_string($context)) {
@@ -74,16 +76,16 @@ class Array2Xml
         return $this;
     }
 
-    protected function addEnum(array $items, SimpleXMLElement $node, $caption)
+    protected function addEnum(array $items, \SimpleXMLElement $node, $caption)
     {
         if (count($items)) {
             foreach ($items as $item) {
-                $this->loop($item, $node->addChild($caption));        
+                $this->loop($item, $node->addChild($caption));
             }
         }
     }
 
-    protected function loop(array $context, SimpleXMLElement $node)
+    protected function loop(array $context, \SimpleXMLElement $node)
     {
         $this->tryToAddAttribs($context, $node)
              ->tryToAddContent($context, $node);
@@ -103,12 +105,11 @@ class Array2Xml
         }
     }
 
-    protected function a2x(array $context, SimpleXMLElement $node)
+    protected function a2x(array $context, \SimpleXMLElement $node)
     {
         if (!count($context)) {
             return $this->res;
         }
-        //var_dump($context);
         $this->loop($context, $node);
         return $this->res;
     }
@@ -136,9 +137,9 @@ class Array2Xml
         return array_diff_key($context, $bother);
     }
 
-    protected function formatXml(SimpleXMLElement $xml)
+    protected function formatXml(\SimpleXMLElement $xml)
     {
-        $dom = new DOMDocument("1.0");
+        $dom = new \DOMDocument("1.0");
         $dom->formatOutput = true;
         $dom->loadXML($xml->asXML());
         return $dom->saveXML();

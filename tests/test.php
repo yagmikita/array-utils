@@ -1,6 +1,12 @@
 <?php
 
-include 'Array2Xml.php';
+require_once realpath(__DIR__ . '/../vendor/autoload.php');
+
+use \ArrayUtils\Array2Xml;
+
+function encode($str) {
+    return htmlspecialchars($str, ENT_QUOTES);
+}
 
 $a = [
     'root' => [
@@ -10,7 +16,7 @@ $a = [
     ],
 ];
 $a2x = new Array2Xml($a);
-var_dump($a2x->conv()) . PHP_EOL . PHP_EOL;
+echo encode($a2x->conv()) . '<br/><br/>';
 
 
 $a = [
@@ -20,7 +26,7 @@ $a = [
         ],
     ],
 ];
-var_dump($a2x->setContext($a)->conv()) . PHP_EOL . PHP_EOL;
+echo encode($a2x->setContext($a)->conv()) . '<br/><br/>';
 
 
 $a = [
@@ -31,7 +37,7 @@ $a = [
                     '@content' => 'Alex',
                     '@attributes' => [
                         'mood' => 'poor',
-                    ],                    
+                    ],
                 ],
                 [
                     '@attributes' => [
@@ -65,7 +71,7 @@ $a = [
         ],
     ],
 ];
-var_dump($a2x->setContext($a)->conv()) . PHP_EOL . PHP_EOL;
+echo encode($a2x->setContext($a)->conv()) . '<br/><br/>';
 
 
 $a = [
@@ -77,7 +83,7 @@ $a = [
         ],
     ],
 ];
-var_dump($a2x->setContext($a)->conv()) . PHP_EOL . PHP_EOL;
+echo encode($a2x->setContext($a)->conv()) . '<br/><br/>';
 
 
 $a = [
@@ -134,4 +140,4 @@ $a = [
         ],
     ],
 ];
-var_dump($a2x->setContext($a)->conv());
+echo encode($a2x->setContext($a)->conv());
