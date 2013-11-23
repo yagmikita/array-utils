@@ -1,7 +1,8 @@
-array2xml
+ArrayUtils
 =========
 
-Array2Xml class uses SimpleXMLElement class to recursivly convert php associative array into xml-formatted string.
+ * Array2Xml -  class uses SimpleXMLElement class to recursively convert PHP associative array into XML-formatted string.
+ * ArrayIterator - class converts PHP array to an itarable object (less memory consumption then the same in SPL-library).
 
 Use cases:
 ==========

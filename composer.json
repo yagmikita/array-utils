@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "php": ">=5.4"
+        "php": ">=5.4",
+        "yagmikita/std-signatures": "dev-master"
     },
     "autoload": {
         "psr-0": {
