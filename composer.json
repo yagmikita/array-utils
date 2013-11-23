@@ -1,6 +1,7 @@
 {
     "name": "yagmikita/array-utils",
     "type": "library",
+    "license": "MIT",
     "keywords": ["library", "utils", "utilities", "lib", "array", "xml", "array2xml"],
     "authors": [
         {

@@ -17,6 +17,7 @@ Use cases:
  			],
  		];
 ```
+    Output:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <root attr1="1"/>
@@ -33,6 +34,7 @@ Use cases:
 		    ],
 		];
 ```
+    Output:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
@@ -53,6 +55,7 @@ Use cases:
 		    ],
 		];
 ```
+    Output:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
@@ -122,6 +125,7 @@ Use cases:
 		    ],
 		];
 ```
+    Output:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <root type="test_type" id="test_id" text="русский текст">
