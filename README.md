@@ -4,11 +4,16 @@ ArrayUtils
  * Array2Xml -  class uses SimpleXMLElement class to recursively convert PHP associative array into XML-formatted string.
  * ArrayIterator - class converts PHP array to an itarable object (less memory consumption then the same in SPL-library).
 
-Use cases:
+Array2Xml use cases:
 ==========
- * in order to to add attributes - add key '@attributes', ex.:
+ * Instantiate the converter:
 ```php
  	<?php
+        require_once realpath(__DIR__ . '/../vendor/autoload.php');
+        use \ArrayUtils\Array2Xml;
+```
+ * in order to to add attributes - add key '@attributes', ex.:
+```php
  		$a = [
  			'root' => [
  				'@attributes' => [
@@ -16,6 +21,8 @@ Use cases:
  				],
  			],
  		];
+        $a2x = new Array2Xml($a);
+        echo $a2x->conv();
 ```
     Output:
 ```xml
@@ -33,6 +40,8 @@ Use cases:
 		        ],
 		    ],
 		];
+        $a2x = new Array2Xml($a);
+        echo $a2x->conv();
 ```
     Output:
 ```xml
@@ -54,6 +63,8 @@ Use cases:
 		        ],
 		    ],
 		];
+        $a2x = new Array2Xml($a);
+        echo $a2x->conv();
 ```
     Output:
 ```xml
@@ -124,6 +135,8 @@ Use cases:
 		        ],
 		    ],
 		];
+        $a2x = new Array2Xml($a);
+        echo $a2x->conv();
 ```
     Output:
 ```xml
